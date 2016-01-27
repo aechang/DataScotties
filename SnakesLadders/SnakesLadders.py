@@ -35,7 +35,11 @@ class GameFSM(object):
     def move(self, die):
         """die is an integer
         """
-        inter_pos = self.position + die
+        inter_pos = 0
+        if self.position + die <= self.n:
+            inter_pos = self.position + die
+        else:
+            inter_pos = self.n
         state_obj = self.all_states[inter_pos]
         final_pos = state_obj.process()
         self.position = final_pos
@@ -44,12 +48,15 @@ class GameFSM(object):
 
     def run(self):
         print("Starting game!")
+        i = 0
         while self.position < self.n:
             # roll die
             die = rollDie()
             # move based on die roll
             self.move(die)
             # record results
+            i += 1
+            print("Turn %s: Square %s" % (i, self.position))
         print("Game over!")
 
 
@@ -73,3 +80,4 @@ game.all_states[15].links = 6
 
 print(game.all_states)
 
+game.run()
